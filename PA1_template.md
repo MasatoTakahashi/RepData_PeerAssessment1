@@ -204,3 +204,5 @@ print(gp)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
+Now, it seems there is a different pattern between weekend and weekday by seeing the plot.
+
