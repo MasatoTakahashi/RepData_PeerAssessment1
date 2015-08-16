@@ -1,16 +1,12 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
 First of all, prepare the environment.
 
-```{r, message=F}
+
+```r
 library(magrittr)
 library(dplyr)
 library(data.table)
@@ -20,12 +16,12 @@ rm(list = ls())
 
 And then, read the raw data.
 
-```{r}
+
+```r
 data.raw <- read.csv("activity.csv", 
                      header = T, 
                      colClasses = c("integer", "Date", "integer"), 
                      na.strings = "NA")
-
 ```
 
 The data set can be downloaded from the [course web site](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)
@@ -43,7 +39,8 @@ The variables included in the dataset are:
 
 Now, calculate the total number of steps taken per day and its mean and median.
 
-```{r}
+
+```r
 # transform into data.table, so that processing would be much easier.
 tbl.data <- data.table(data.raw)
 # calculate the total number of steps taken per day
@@ -84,12 +81,15 @@ legend("topright",
        cex = 0.9)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 
 ## What is the average daily activity pattern?
 
 In the next plot, I will visualize the daily activity pattern in the same manner as previous section.
 
-```{r}
+
+```r
 # calculate the average steps across all days
 tbl.data.5min_interval <- tbl.data[ , list(avg_steps = mean(steps, na.rm = T)), by = interval]
 
@@ -115,19 +115,27 @@ text(x = tbl.data.5min_interval[ind]$interval * 1.1,
     offset = 0.2,
     cex = 0.8,
     adj = 0)
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 
 ## Imputing missing values
 
 In this section, impute the missing values as the mean value for specific date.
 
-```{r}
+
+```r
 # get the number of the NA records
 buf.sum <- sum(is.na(data.raw$steps))
 cat("the total number of missing values in the dataset:", buf.sum)
+```
 
+```
+## the total number of missing values in the dataset: 2304
+```
+
+```r
 # inpute the missing values as the mean value
 tbl.data$steps_imputed <- tbl.data$steps
 tbl.data$steps_imputed[is.na(tbl.data$steps_imputed)] <- mean(tbl.data$steps, na.rm = T)
@@ -159,9 +167,17 @@ legend("topright",
        lwd = lwd,
        lty = lty,
        cex = 0.9)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+
+```r
 # print the difference between mena and the median
 cat("the difference between the mean and median: ", buf.mean - buf.median)
+```
+
+```
+## the difference between the mean and median:  0
 ```
 
 Recall the first raw plot (NA removed), mean value were slightly belowe the median, while 
@@ -170,7 +186,8 @@ the data replaced NA with the average almost the same.
 ## Are there differences in activity patterns between weekdays and weekends?
 
 Now, prepare the data to split between weekdays and weekends.
-```{r, fig.width=10}
+
+```r
 # add dayname and flag the date is weekday or weekend
 tbl.data$dayname <- weekdays(data.raw$date)
 tbl.data$is_weekend <- ifelse(tbl.data$dayname %in%  c("Sunday", "Saturday"), "Weekend", "Weekdays")
@@ -185,5 +202,5 @@ gp <- gp + theme(legend.title=element_blank())
 print(gp)
 ```
 
-Now, it seems there is a different pattern between weekend and weekday by seeing the plot.
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
