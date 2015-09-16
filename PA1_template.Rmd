@@ -189,3 +189,5 @@ print(gp)
 
 Now, it seems there is a different pattern between weekend and weekday by seeing the plot.
 
+
+
