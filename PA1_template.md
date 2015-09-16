@@ -193,6 +193,7 @@ tbl.data$dayname <- weekdays(data.raw$date)
 tbl.data$is_weekend <- ifelse(tbl.data$dayname %in%  c("Sunday", "Saturday"), "Weekend", "Weekdays")
 
 # now, calcultate the number of the steps with 5min interval with splitting on the is_weekend flag.
+# I just prefer to use ggplot2 to plot the panel-plot for it easiness.
 tbl.data.5min_interval_splited <- tbl.data[ , list(avg_steps = mean(steps, na.rm = T)), by = list(interval, is_weekend)]
 
 gp <- ggplot(tbl.data.5min_interval_splited, aes(x=interval, y=avg_steps, col = 1))
