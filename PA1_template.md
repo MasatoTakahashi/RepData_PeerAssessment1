@@ -195,10 +195,10 @@ tbl.data$is_weekend <- ifelse(tbl.data$dayname %in%  c("Sunday", "Saturday"), "W
 # now, calcultate the number of the steps with 5min interval with splitting on the is_weekend flag.
 tbl.data.5min_interval_splited <- tbl.data[ , list(avg_steps = mean(steps, na.rm = T)), by = list(interval, is_weekend)]
 
-gp <- ggplot(tbl.data.5min_interval_splited, aes(x=interval, y=avg_steps, colour=is_weekend))
-gp <- gp + geom_line() 
+gp <- ggplot(tbl.data.5min_interval_splited, aes(x=interval, y=avg_steps, col = 1))
+gp <- gp + geom_line() + facet_wrap(~is_weekend, ncol = 1)
 gp <- gp + xlab("5 min. time interval") + ylab("Average number of steps")
-gp <- gp + theme(legend.title=element_blank())
+gp <- gp + theme(legend.title=element_blank(), legend.position="none")
 print(gp)
 ```
 
